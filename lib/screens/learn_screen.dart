@@ -127,8 +127,7 @@ class _LearnScreenState extends State<LearnScreen> {
       'category': 'Prevention',
       'icon': Icons.monitor_heart_rounded,
       'color': Color(0xFFFFE5EF),
-      'summary':
-          'Small, consistent habits can support heart health over time.',
+      'summary': 'Small, consistent habits can support heart health over time.',
       'sections': [
         'Build healthy habits',
         '• Eat a variety of vegetables, fruit, whole grains, and other nutritious foods.\n'
@@ -171,8 +170,8 @@ class _LearnScreenState extends State<LearnScreen> {
     final query = searchController.text.trim().toLowerCase();
 
     return articles.where((article) {
-      final categoryMatches = selectedCategory == 'All' ||
-          article['category'] == selectedCategory;
+      final categoryMatches =
+          selectedCategory == 'All' || article['category'] == selectedCategory;
 
       final text = [
         article['title'],
@@ -195,81 +194,26 @@ class _LearnScreenState extends State<LearnScreen> {
         child: CustomScrollView(
           slivers: [
             SliverToBoxAdapter(
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(22, 24, 22, 27),
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [darkRed, red, Color(0xFFE65353)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    label: const Text('Back to Menu'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFFC62828),
+                      side: const BorderSide(
+                        color: Color(0xFFC62828),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
                   ),
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(30),
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Row(
-                      children: [
-                        Icon(
-                          Icons.health_and_safety_rounded,
-                          color: Colors.white,
-                          size: 29,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'MEDICAL LEARNING HUB',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.1,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Understand your health.',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 27,
-                        fontWeight: FontWeight.w900,
-                        height: 1.15,
-                      ),
-                    ),
-                    const SizedBox(height: 7),
-                    const Text(
-                      'Learn the signs. Know what to do.\nBelajar medis, selangkah demi selangkah.',
-                      style: TextStyle(
-                        color: Color(0xFFFFE9E9),
-                        fontSize: 13,
-                        height: 1.5,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: searchController,
-                      onChanged: (_) => setState(() {}),
-                      decoration: InputDecoration(
-                        hintText: 'Search topics / Cari topik...',
-                        prefixIcon: const Icon(
-                          Icons.search_rounded,
-                          color: red,
-                        ),
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 15,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
             ),
@@ -301,12 +245,10 @@ class _LearnScreenState extends State<LearnScreen> {
                       child: ListView.separated(
                         scrollDirection: Axis.horizontal,
                         itemCount: categories.length,
-                        separatorBuilder: (_, __) =>
-                            const SizedBox(width: 8),
+                        separatorBuilder: (_, __) => const SizedBox(width: 8),
                         itemBuilder: (context, index) {
                           final category = categories[index];
-                          final selected =
-                              selectedCategory == category;
+                          final selected = selectedCategory == category;
 
                           return ChoiceChip(
                             label: Text(category),
@@ -325,9 +267,7 @@ class _LearnScreenState extends State<LearnScreen> {
                               fontWeight: FontWeight.w700,
                             ),
                             side: BorderSide(
-                              color: selected
-                                  ? red
-                                  : const Color(0xFFF0D9D9),
+                              color: selected ? red : const Color(0xFFF0D9D9),
                             ),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(22),

@@ -15,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   static const Color red = Color(0xFFC62828);
   static const Color darkRed = Color(0xFF8E1717);
-  static const Color paleRed = Color(0xFFFFF1F1);
   static const Color ink = Color(0xFF252B36);
   static const Color muted = Color(0xFF777F8D);
 
@@ -201,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(29),
                         boxShadow: [
                           BoxShadow(
-                            color: red.withOpacity(0.22),
+                            color: red.withValues(alpha: 0.22),
                             blurRadius: 24,
                             offset: const Offset(0, 10),
                           ),
@@ -252,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: darkRed.withOpacity(0.055),
+                          color: darkRed.withValues(alpha: 0.055),
                           blurRadius: 25,
                           offset: const Offset(0, 9),
                         ),

@@ -219,6 +219,59 @@ class _LearnScreenState extends State<LearnScreen> {
             ),
             SliverToBoxAdapter(
               child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(23),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [darkRed, red],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: red.withValues(alpha: 0.18),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.medical_services_rounded,
+                        color: Colors.white,
+                        size: 34,
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        'MEDICAL LEARNING HUB',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 21,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 0.4,
+                        ),
+                      ),
+                      SizedBox(height: 7),
+                      Text(
+                        'Build your knowledge. Learn first response. Help others stay safe.',
+                        style: TextStyle(
+                          color: Color(0xFFFFE6E6),
+                          fontSize: 13,
+                          height: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 23, 20, 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -237,6 +290,58 @@ class _LearnScreenState extends State<LearnScreen> {
                       style: TextStyle(
                         fontSize: 13,
                         color: Color(0xFF77717A),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextField(
+                      controller: searchController,
+                      onChanged: (_) => setState(() {}),
+                      textInputAction: TextInputAction.search,
+                      decoration: InputDecoration(
+                        hintText: 'Search medical topics...',
+                        hintStyle: const TextStyle(
+                          color: Color(0xFF9B9098),
+                          fontSize: 13,
+                        ),
+                        prefixIcon: const Icon(
+                          Icons.search_rounded,
+                          color: red,
+                        ),
+                        suffixIcon: searchController.text.isEmpty
+                            ? null
+                            : IconButton(
+                                tooltip: 'Clear search',
+                                onPressed: () {
+                                  searchController.clear();
+                                  setState(() {});
+                                },
+                                icon: const Icon(Icons.close_rounded),
+                              ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFF0D9D9),
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: Color(0xFFF0D9D9),
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: const BorderSide(
+                            color: red,
+                            width: 1.5,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 15),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'cart_screen.dart';
+import 'package:ags_flutter_starter/screens/learn_screen.dart';
 // ============================================================================
 // 🍽️ MENUSCREEN - KANTINKU STARTER TEMPLATE (Week 6: Navigation)
 // Alta Global School | IT Grade 10 & 11 (SHS)
@@ -12,87 +13,166 @@ import 'cart_screen.dart';
 
 class MenuScreen extends StatefulWidget {
   final String userName;
-  
+
   const MenuScreen({super.key, required this.userName});
-     @override
+  @override
   State<MenuScreen> createState() => _MenuScreenState();
-  }
+}
 
 class _MenuScreenState extends State<MenuScreen> {
-    bool _isSearching = false;
-   final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // [GANTI DI SINI]: Ganti daftar menu dengan menu kantin tim kamu!
     final List<Map<String, dynamic>> menuItems = [
-      {'name': 'lorem ipsum', 'price': 'lorem ipsum', 'icon': Icons.rice_bowl, 'stall': 'lorem ipsum'},
-      {'name': 'lorem ipsum', 'price': 'lorem ipsum', 'icon': Icons.ramen_dining, 'stall': 'lorem ipsum'},
-      {'name': 'lorem ipsum', 'price': 'lorem ipsum', 'icon': Icons.set_meal, 'stall': 'lorem ipsum'},
-      {'name': 'lorem ipsum', 'price': 'lorem ipsum', 'icon': Icons.local_drink, 'stall': 'lorem ipsum'},
-      {'name': 'lorem ipsum', 'price': 'lorem ipsum', 'icon': Icons.grass, 'stall': 'lorem ipsum'},
+      {
+        'name': 'lorem ipsum',
+        'price': 'lorem ipsum',
+        'icon': Icons.rice_bowl,
+        'stall': 'lorem ipsum'
+      },
+      {
+        'name': 'lorem ipsum',
+        'price': 'lorem ipsum',
+        'icon': Icons.ramen_dining,
+        'stall': 'lorem ipsum'
+      },
+      {
+        'name': 'lorem ipsum',
+        'price': 'lorem ipsum',
+        'icon': Icons.set_meal,
+        'stall': 'lorem ipsum'
+      },
+      {
+        'name': 'lorem ipsum',
+        'price': 'lorem ipsum',
+        'icon': Icons.local_drink,
+        'stall': 'lorem ipsum'
+      },
+      {
+        'name': 'lorem ipsum',
+        'price': 'lorem ipsum',
+        'icon': Icons.grass,
+        'stall': 'lorem ipsum'
+      },
     ];
 
     return Scaffold(
       backgroundColor: const Color(0xFF092328),
       appBar: AppBar(
         title: _isSearching
-    ? TextField(
-        controller: _searchController,
-        autofocus: true,
-        style: const TextStyle(color: Colors.white),
-        decoration: const InputDecoration(
-          hintText: 'Search...',
-          hintStyle: TextStyle(color: Colors.white70),
-          border: InputBorder.none,
-        ),
-        onChanged: (value) {
-          setState(() {});
-        },
-      )
-    : const Text(
-        'what we offer',
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
+            ? TextField(
+                controller: _searchController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(color: Colors.white70),
+                  border: InputBorder.none,
+                ),
+                onChanged: (value) {
+                  setState(() {});
+                },
+              )
+            : const Text(
+                'what we offer',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
         backgroundColor: const Color(0xFF12544F),
         foregroundColor: Colors.white,
         actions: [
-  // SEARCH 🔍
-  IconButton(
-    icon: Icon(
-      _isSearching ? Icons.close : Icons.search,
-    ),
-    onPressed: () {
-      setState(() {
-        if (_isSearching) {
-          _searchController.clear();
-        }
-        _isSearching = !_isSearching;
-      });
-    },
-  ),
+          // SEARCH 🔍
+          IconButton(
+            icon: Icon(
+              _isSearching ? Icons.close : Icons.search,
+            ),
+            onPressed: () {
+              setState(() {
+                if (_isSearching) {
+                  _searchController.clear();
+                }
+                _isSearching = !_isSearching;
+              });
+            },
+          ),
 
-  // PROFILE 👤
-  IconButton(
-    icon: const Icon(Icons.person),
-    tooltip: 'Profile',
-    onPressed: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const ProfileScreen(),
-        ),
-      );
-    },
-  ),
-],
-),
-
+          // PROFILE 👤
+          IconButton(
+            icon: const Icon(Icons.person),
+            tooltip: 'Profile',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // MEDICAL LEARNING BUTTON
+            Container(
+              width: double.infinity,
+              margin: const EdgeInsets.only(bottom: 18),
+              child: Card(
+                elevation: 3,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.all(16),
+                  leading: Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFE5E5),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.menu_book_rounded,
+                      color: Color(0xFFC62828),
+                      size: 30,
+                    ),
+                  ),
+                  title: const Text(
+                    'Learn About Medicine',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Color(0xFF8E1717),
+                    ),
+                  ),
+                  subtitle: const Padding(
+                    padding: EdgeInsets.only(top: 5),
+                    child: Text(
+                      'Learn about heart attacks, diabetes, stroke & first aid.',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color: Color(0xFFC62828),
+                    size: 18,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LearnScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
             // Greeting
             const Padding(
               padding: EdgeInsets.only(bottom: 16.0),
@@ -108,27 +188,20 @@ class _MenuScreenState extends State<MenuScreen> {
 
             // Daftar Menu
             ...menuItems
-    .where((item) {
-      final query = _searchController.text.toLowerCase();
+                .where((item) {
+                  final query = _searchController.text.toLowerCase();
 
-      if (query.isEmpty) return true;
+                  if (query.isEmpty) return true;
 
-      return item['name']
-              .toString()
-              .toLowerCase()
-              .contains(query) ||
-          item['stall']
-              .toString()
-              .toLowerCase()
-              .contains(query) ||
-          item['price']
-              .toString()
-              .toLowerCase()
-              .contains(query);
-    })
-    .map((item) => _buildMenuCard(context, item))
-    .toList(),
-
+                  return item['name']
+                          .toString()
+                          .toLowerCase()
+                          .contains(query) ||
+                      item['stall'].toString().toLowerCase().contains(query) ||
+                      item['price'].toString().toLowerCase().contains(query);
+                })
+                .map((item) => _buildMenuCard(context, item))
+                .toList(),
           ],
         ),
       ),
@@ -167,7 +240,7 @@ class _MenuScreenState extends State<MenuScreen> {
         title: Text(
           item['name'] as String,
           style: const TextStyle(
-            fontWeight: FontWeight.bold, 
+            fontWeight: FontWeight.bold,
             fontSize: 15,
             color: Color(0xFF092328),
           ),
@@ -180,7 +253,8 @@ class _MenuScreenState extends State<MenuScreen> {
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF12544F),
             foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           ),
           onPressed: () {
@@ -196,7 +270,8 @@ class _MenuScreenState extends State<MenuScreen> {
               ),
             );
           },
-          child: const Text('view article/course', style: TextStyle(fontSize: 13)),
+          child:
+              const Text('view article/course', style: TextStyle(fontSize: 13)),
         ),
       ),
     );
@@ -300,9 +375,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Icons.lock_outline,
                           color: Color(0xFF12544F),
                         ),
-
                         const SizedBox(width: 15),
-
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -316,9 +389,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               const SizedBox(height: 5),
                               Text(
-                                showPassword
-                                    ? password
-                                    : '•' * password.length,
+                                showPassword ? password : '•' * password.length,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
@@ -328,7 +399,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ],
                           ),
                         ),
-
                         IconButton(
                           icon: Icon(
                             showPassword

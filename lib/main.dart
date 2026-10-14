@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
+
+// ============================================================================
+// 🚀 KANTINKU - MAIN.DART (Week 6: Navigation Update)
+// Alta Global School | IT Grade 10 & 11 (SHS)
+//
+// PERUBAHAN WEEK 6:
+// - home sekarang adalah LoginScreen (bukan HomeScreen)
+// - Dari LoginScreen, user bisa navigate ke MenuScreen
+// - Dari MenuScreen, user bisa navigate ke CartScreen
+// ============================================================================
 
 void main() {
   runApp(const MyApp());
@@ -17,8 +27,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
-      // TODO (Week 6): We will add routes here for KantinKu Menu Navigation!
+      // Week 6: LoginScreen adalah pintu masuk pertama aplikasi
+      home: const LoginScreen(),
     );
   }
 }
+

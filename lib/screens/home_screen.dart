@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF1F5F9), // Warna background abu-abu terang
+      backgroundColor: const Color.fromARGB(255, 9, 35, 40 ), // Warna background abu-abu terang
 
       // ----------------------------------------------------------------------
       // 1. APPBAR (Bagian Header Atas)
@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
       // ----------------------------------------------------------------------
       appBar: AppBar(
         title: const Text(
-          'Halo', // [GANTI DI SINI]: Judul aplikasi kantin kamu
+          'Basic life support', // [GANTI DI SINI]: Judul aplikasi kantin kamu
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: const Color(0xFF0E7C86), // [GANTI DI SINI]: Warna AppBar
@@ -76,14 +76,14 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       // Avatar Inisial Nama
                       CircleAvatar(
                         radius: 20,
                         backgroundColor: Color(0xFF0E7C86), // [GANTI DI SINI]: Warna avatar
                         child: Text(
-                          'BP', // [GANTI DI SINI]: Inisial nama siswa
+                          'MS', // [GANTI DI SINI]: Inisial nama siswa
                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -92,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Budi Pratama', // [GANTI DI SINI]: Nama pengguna / persona
+                            'Meldi Sayoko', // [GANTI DI SINI]: Nama pengguna / persona
                             style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
                           ),
                           Text(

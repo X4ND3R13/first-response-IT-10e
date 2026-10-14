@@ -1,4 +1,4 @@
-# 🛒 KantinKu - Panduan Praktikum & Setup Flutter (Week 5)
+# BLS - Panduan Praktikum & Setup Flutter (Week 5)
 **Alta Global School | IT Grade 10 & 11 (SHS)**  
 *Sprint 1: Mobile App Development Bootcamp*
 

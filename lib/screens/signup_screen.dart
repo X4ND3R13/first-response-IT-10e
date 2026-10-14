@@ -47,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   showModalBottomSheet(
     context: context,
-    backgroundColor: const Color.fromARGB(255, 201, 248, 244),
+    backgroundColor: const Color(0xFFFFF4F4),
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(24),
@@ -108,13 +108,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC), // [CHANGE HERE]: Background color
+      backgroundColor: const Color(0xFFFFF7F7), // [CHANGE HERE]: Background color
       appBar: AppBar(
         title: const Text(
-          'Create BLS account', // [CHANGE HERE]: App bar title
+          'Create BLS Account', // [CHANGE HERE]: App bar title
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color.fromARGB(255, 158, 23, 23), // [CHANGE HERE]: Main theme color
+        backgroundColor: const Color(0xFFB71C1C), // [CHANGE HERE]: Main theme color
         foregroundColor: Colors.white,
         elevation: 0,
       ),
@@ -133,33 +133,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 children: [
                   // Header & Greeting
                   const Text(
-                    'New Student Registration', // [CHANGE HERE]: Form title
+                    'Join the First-Response Team', // [CHANGE HERE]: Form title
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF0A5A61),
+                      color: Color(0xFF9F1717),
                     ),
                   ),
                   const SizedBox(height: 6),
                   const Text(
-                    'Fill out the form below to start ordering canteen food.', // [CHANGE HERE]: Subtitle
-                    style: TextStyle(fontSize: 14, color: Color(0xFF64748B)),
+                    'Create your student profile to get started.', // [CHANGE HERE]: Subtitle
+                    style: TextStyle(fontSize: 14, color: Color(0xFF747987)),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFB71C1C), Color(0xFFD94343)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFB71C1C).withOpacity(0.16),
+                          blurRadius: 16,
+                          offset: const Offset(0, 7),
+                        ),
+                      ],
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.health_and_safety_rounded, color: Colors.white, size: 34),
+                        SizedBox(width: 13),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Ready to make a difference?',
+                                style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Set up your profile for the BLS community.',
+                                style: TextStyle(color: Color(0xFFFFE7E7), fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(Icons.favorite_rounded, color: Color(0xFFFFD7D7), size: 22),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
 
                   // ============================================================
                   // INPUT 1: FULL NAME
                   // ============================================================
                   const Text(
                     'Full Name',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF334155)),
+                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF303642)),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _nameController,
                     decoration: const InputDecoration(
                       hintText: 'e.g. Alex Johnson', // [CHANGE HERE]
-                      prefixIcon: Icon(Icons.person_outline, color: Color(0xFF0E7C86)),
+                      prefixIcon: Icon(Icons.person_outline, color: Color(0xFFC62828)),
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -182,14 +225,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // ============================================================
                   const Text(
                     'Class / Student ID', // [CHANGE HERE]: Can be 'Phone Number' or 'Table Number'
-                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF334155)),
+                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF303642)),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(
                     controller: _classController,
                     decoration: const InputDecoration(
                       hintText: 'e.g. 10-B (ID: 2026010)', // [CHANGE HERE]
-                      prefixIcon: Icon(Icons.school_outlined, color: Color(0xFF0E7C86)),
+                      prefixIcon: Icon(Icons.school_outlined, color: Color(0xFFC62828)),
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -209,7 +252,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // ============================================================
                   const Text(
                     'Password',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF334155)),
+                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF303642)),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(
@@ -217,11 +260,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscureText: _obscurePassword, // Hides typed characters
                     decoration: InputDecoration(
                       hintText: 'Minimum 6 characters', // [CHANGE HERE]
-                      prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFF0E7C86)),
+                      prefixIcon: const Icon(Icons.lock_outline, color: Color(0xFFC62828)),
                       suffixIcon: IconButton(
                         icon: Icon(
                           _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                          color: const Color(0xFF64748B),
+                          color: const Color(0xFF747987),
                         ),
                         onPressed: () {
                           // Toggle visibility on eye icon tap
@@ -232,7 +275,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
-                      border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
+                      enabledBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14)), borderSide: BorderSide(color: Color(0xFFF0DADA))),
+                       focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14)), borderSide: BorderSide(color: Color(0xFFC62828), width: 1.7)),
+                       border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14))),
                     ),
                     // VALIDATOR: Minimum 6 characters
                     validator: (value) {
@@ -252,7 +297,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // ============================================================
                   const Text(
                     'Confirm Password',
-                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF334155)),
+                    style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xFF303642)),
                   ),
                   const SizedBox(height: 6),
                   TextFormField(
@@ -260,7 +305,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     obscureText: _obscurePassword,
                     decoration: const InputDecoration(
                       hintText: 'Re-enter your password', // [CHANGE HERE]
-                      prefixIcon: Icon(Icons.lock_reset_outlined, color: Color(0xFF0E7C86)),
+                      prefixIcon: Icon(Icons.lock_reset_outlined, color: Color(0xFFC62828)),
                       filled: true,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
@@ -315,13 +360,13 @@ Row(
             Text(
               _countryCode,
               style: const TextStyle(
-                color:  Color(0xFF334155),
+                color:  Color(0xFF303642),
                 fontSize: 16,
               ),
             ),
             const Icon(
               Icons.arrow_drop_down,
-              color:  Color(0xFF334155),
+              color:  Color(0xFF303642),
             ),
           ],
         ),
@@ -336,27 +381,27 @@ Row(
         controller: _phoneController,
         keyboardType: TextInputType.phone,
         style: const TextStyle(
-          color:  Color(0xFF334155),
+          color:  Color(0xFF303642),
         ),
         decoration: InputDecoration(
           hintText: 'Phone number',
           hintStyle: const TextStyle(
-            color:  Color(0xFF334155),
+            color:  Color(0xFF303642),
           ),
           prefixIcon: const Icon(
             Icons.phone_outlined,
-            color:  Color(0xFF334155),
+            color:  Color(0xFF303642),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(
-              color:  Color(0xFF334155),
+              color:  Color(0xFF303642),
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: const BorderSide(
-              color:  Color(0xFF334155),
+              color:  Color(0xFF303642),
               width: 2,
             ),
           ),
@@ -390,14 +435,15 @@ GestureDetector(
     height: 56,
     padding: const EdgeInsets.symmetric(horizontal: 16),
     decoration: BoxDecoration(
-      border: Border.all(color: const Color.fromARGB(97, 3, 74, 100)),
+      color: const Color(0xFFFFFCFC),
+       border: Border.all(color: const Color(0xFFF0DADA)),
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(
       children: [
         const Icon(
           Icons.calendar_month_outlined,
-          color:  Color(0xFF334155),
+          color:  Color(0xFF303642),
         ),
         const SizedBox(width: 12),
         Text(
@@ -408,8 +454,8 @@ GestureDetector(
                 '${_dateOfBirth!.year}',
           style: TextStyle(
             color: _dateOfBirth == null
-                ? const Color(0xFF334155)
-                : const Color(0xFF334155),
+                ? const Color(0xFF303642)
+                : const Color(0xFF303642),
             fontSize: 16,
           ),
         ),
@@ -426,7 +472,7 @@ GestureDetector(
                     height: 52,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF0E7C86), // [CHANGE HERE]: Button color
+                        backgroundColor: const Color(0xFFB71C1C), // Medical red action button
                         foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -454,7 +500,7 @@ GestureDetector(
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Account created successfully!'),
-        backgroundColor: Color(0xFF0E7C86),
+        backgroundColor: Color(0xFFC62828),
       ),
     );
 
@@ -464,7 +510,7 @@ GestureDetector(
                          },
 
                       child: const Text(
-                        'Sign Up Now', // [CHANGE HERE]: Submit button text
+                        'Create Account', // [CHANGE HERE]: Submit button text
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -479,9 +525,9 @@ GestureDetector(
                         Navigator.pop(context);
                       },
                       child: const Text(
-                        'Already have an account? Log in here',
+                        'Already have an account? Log in',
                         style: TextStyle(
-                          color: Color.fromARGB(255, 165, 231, 237),
+                          color: Color(0xFFB71C1C),
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -502,6 +548,7 @@ GestureDetector(
   @override
   void dispose() {
     _nameController.dispose();
+    _phoneController.dispose();
     _classController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();

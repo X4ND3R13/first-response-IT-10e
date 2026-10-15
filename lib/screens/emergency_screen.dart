@@ -69,7 +69,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBackground,
+      backgroundColor: const Color.fromARGB(255, 216, 236, 246),
       body: SafeArea(
         child: Stack(
           children: [
@@ -149,7 +149,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                         'Choose the assistance option to continue to the first-response guide. Stay calm and check that the area is safe.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color(0xFFD0DCE2),
+                          color: Color.fromARGB(255, 115, 144, 159),
                           fontSize: 14,
                           height: 1.6,
                         ),
@@ -250,7 +250,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                               child: Text(
                                 'This button opens the app’s guidance page; it does not contact emergency services. If someone is in immediate danger, contact local emergency services now.',
                                 style: TextStyle(
-                                  color: Color(0xFFD0DCE2),
+                                  color: Color.fromARGB(222, 152, 162, 167),
                                   fontSize: 11,
                                   height: 1.5,
                                 ),

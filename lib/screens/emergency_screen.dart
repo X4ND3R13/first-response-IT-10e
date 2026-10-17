@@ -12,14 +12,30 @@ class EmergencyScreen extends StatefulWidget {
   State<EmergencyScreen> createState() => _EmergencyScreenState();
 }
 
-class _EmergencyScreenState extends State<EmergencyScreen> {
+class _EmergencyScreenState extends State<EmergencyScreen>
+    with SingleTickerProviderStateMixin {
   static const Color darkBackground = Color(0xFF091F2A);
   static const Color medicalRed = Color(0xFFE53935);
   static const Color softRed = Color(0xFFFF6B6B);
 
   Timer? _countdownTimer;
+  late final AnimationController _pulseController;
+  late final Animation<double> _pulseAnimation;
   int _countdown = 0;
   bool _isCountingDown = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Subtle pulsing animation helps draw attention to the emergency icon.
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..repeat(reverse: true);
+    _pulseAnimation = Tween<double>(begin: 0.96, end: 1.04).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
 
   void _startCountdown() {
     if (_isCountingDown) return;
@@ -62,14 +78,16 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
 
   @override
   void dispose() {
+    // Stop all asynchronous/animation work when this screen is removed.
     _countdownTimer?.cancel();
+    _pulseController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 216, 236, 246),
+      backgroundColor: darkBackground,
       body: SafeArea(
         child: Stack(
           children: [
@@ -105,10 +123,12 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        width: 112,
-                        height: 112,
-                        decoration: BoxDecoration(
+                      ScaleTransition(
+                        scale: _pulseAnimation,
+                        child: Container(
+                          width: 112,
+                          height: 112,
+                          decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: medicalRed.withValues(alpha: 0.15),
                           border: Border.all(
@@ -116,10 +136,11 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                             width: 1.5,
                           ),
                         ),
-                        child: const Icon(
-                          Icons.health_and_safety_rounded,
-                          size: 62,
-                          color: softRed,
+                          child: const Icon(
+                            Icons.health_and_safety_rounded,
+                            size: 62,
+                            color: softRed,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 24),
@@ -149,7 +170,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                         'Choose the assistance option to continue to the first-response guide. Stay calm and check that the area is safe.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 115, 144, 159),
+                          color: Color(0xFFD0DCE2),
                           fontSize: 14,
                           height: 1.6,
                         ),
@@ -250,7 +271,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
                               child: Text(
                                 'This button opens the app’s guidance page; it does not contact emergency services. If someone is in immediate danger, contact local emergency services now.',
                                 style: TextStyle(
-                                  color: Color.fromARGB(222, 152, 162, 167),
+                                  color: Color(0xFFD0DCE2),
                                   fontSize: 11,
                                   height: 1.5,
                                 ),

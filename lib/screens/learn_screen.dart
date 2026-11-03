@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
 
 class LearnScreen extends StatefulWidget {
   const LearnScreen({super.key});
@@ -8,12 +12,78 @@ class LearnScreen extends StatefulWidget {
 }
 
 class _LearnScreenState extends State<LearnScreen> {
+  
+
   static const red = Color(0xFFC62828);
   static const darkRed = Color(0xFF8E1717);
   static const background = Color(0xFFFFF7F7);
 
   final searchController = TextEditingController();
   String selectedCategory = 'All';
+
+  // Custom topics saved locally
+  final List<Map<String, dynamic>> customArticles = [];
+
+  static const String storageKey = 'custom_learn_articles';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCustomArticles();
+  }
+
+// D. LOAD CUSTOM ARTICLES
+Future<void> _loadCustomArticles() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  final savedData = prefs.getString(storageKey);
+
+  if (savedData == null) return;
+
+  try {
+    final decoded = jsonDecode(savedData) as List;
+
+    final loadedArticles = decoded.map((item) {
+      final article = Map<String, dynamic>.from(item);
+
+      return <String, dynamic>{
+        ...article,
+        'icon': Icons.library_books_rounded,
+        'color': const Color(0xFFE8E5FF),
+        '_isCustom': true,
+      };
+    }).toList();
+
+    if (!mounted) return;
+
+    setState(() {
+      customArticles.addAll(loadedArticles);
+    });
+  } catch (e) {
+    debugPrint('Error loading custom topics: $e');
+  }
+}
+
+// E. SAVE CUSTOM ARTICLES
+Future<void> _saveCustomArticles() async {
+  final prefs = await SharedPreferences.getInstance();
+
+  final data = customArticles.map((article) {
+    return {
+      'id': article['id'],
+      'title': article['title'],
+      'subtitle': article['subtitle'],
+      'category': article['category'],
+      'summary': article['summary'],
+      'sections': article['sections'],
+    };
+  }).toList();
+
+  await prefs.setString(
+    storageKey,
+    jsonEncode(data),
+  );
+}
 
   final categories = const [
     'All',

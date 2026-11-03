@@ -22,21 +22,24 @@ class _MenuScreenState extends State<MenuScreen> {
   final List<Map<String, dynamic>> _features = const [
     {
       'title': 'Medical Learning Hub',
-      'description': 'Understand health conditions, warning signs, and first aid.',
+      'description':
+          'Understand health conditions, warning signs, and first aid.',
       'details': 'Heart attack • Diabetes • Stroke • CPR • Burns',
       'icon': Icons.menu_book_rounded,
       'tag': 'LEARN',
     },
     {
       'title': 'Emergency Awareness',
-      'description': 'Learn why quick action and contacting emergency services matter.',
+      'description':
+          'Learn why quick action and contacting emergency services matter.',
       'details': 'Recognize danger • Stay safe • Get help',
       'icon': Icons.emergency_rounded,
       'tag': 'BE PREPARED',
     },
     {
       'title': 'First Aid Basics',
-      'description': 'Explore basic response principles and when to seek professional help.',
+      'description':
+          'Explore basic response principles and when to seek professional help.',
       'details': 'CPR basics • Burn care • Emergency priorities',
       'icon': Icons.health_and_safety_rounded,
       'tag': 'ESSENTIALS',
@@ -60,7 +63,9 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget build(BuildContext context) {
     final query = _searchController.text.trim().toLowerCase();
     final visibleFeatures = _features.where((feature) {
-      final searchable = '${feature['title']} ${feature['description']} ${feature['details']}'.toLowerCase();
+      final searchable =
+          '${feature['title']} ${feature['description']} ${feature['details']}'
+              .toLowerCase();
       return searchable.contains(query);
     }).toList();
 
@@ -89,7 +94,8 @@ class _MenuScreenState extends State<MenuScreen> {
         actions: [
           IconButton(
             tooltip: _isSearching ? 'Close search' : 'Search',
-            icon: Icon(_isSearching ? Icons.close_rounded : Icons.search_rounded),
+            icon:
+                Icon(_isSearching ? Icons.close_rounded : Icons.search_rounded),
             onPressed: () {
               setState(() {
                 if (_isSearching) _searchController.clear();
@@ -120,26 +126,39 @@ class _MenuScreenState extends State<MenuScreen> {
               const Expanded(
                 child: Text(
                   'What can you do here?',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Color(0xFF29242A)),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: Color(0xFF29242A)),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(color: const Color(0xFFFFE5E5), borderRadius: BorderRadius.circular(20)),
-                child: const Text('EXPLORE', style: TextStyle(color: darkRed, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 0.8)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                    color: const Color(0xFFFFE5E5),
+                    borderRadius: BorderRadius.circular(20)),
+                child: const Text('EXPLORE',
+                    style: TextStyle(
+                        color: darkRed,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.8)),
               ),
             ],
           ),
           const SizedBox(height: 6),
           const Text(
             'Choose a section to build your medical knowledge and learn how to respond more safely.',
-            style: TextStyle(color: Color(0xFF746B70), height: 1.45, fontSize: 13),
+            style:
+                TextStyle(color: Color(0xFF746B70), height: 1.45, fontSize: 13),
           ),
           const SizedBox(height: 15),
           if (visibleFeatures.isEmpty)
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 26),
-              child: Center(child: Text('No sections found. Try another search.')),
+              child:
+                  Center(child: Text('No sections found. Try another search.')),
             )
           else
             ...visibleFeatures.map(_buildFeatureCard),
@@ -149,7 +168,8 @@ class _MenuScreenState extends State<MenuScreen> {
           const Text(
             'Important: This app is for education only. It does not replace professional medical advice, certified first-aid training, or emergency services.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Color(0xFF8C7777), fontSize: 11, height: 1.5),
+            style:
+                TextStyle(color: Color(0xFF8C7777), fontSize: 11, height: 1.5),
           ),
         ],
       ),
@@ -157,7 +177,8 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _buildHero() {
-    final cleanName = widget.userName.trim().isEmpty ? 'there' : widget.userName.trim();
+    final cleanName =
+        widget.userName.trim().isEmpty ? 'there' : widget.userName.trim();
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -168,34 +189,60 @@ class _MenuScreenState extends State<MenuScreen> {
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(26),
-        boxShadow: [BoxShadow(color: red.withValues(alpha: 0.22), blurRadius: 18, offset: const Offset(0, 8))],
+        boxShadow: [
+          BoxShadow(
+              color: red.withValues(alpha: 0.22),
+              blurRadius: 18,
+              offset: const Offset(0, 8))
+        ],
       ),
       child: Stack(
         children: [
           Positioned(
             right: -8,
             top: 2,
-            child: Icon(Icons.health_and_safety_rounded, size: 104, color: Colors.white.withValues(alpha: 0.12)),
+            child: Icon(Icons.health_and_safety_rounded,
+                size: 104, color: Colors.white.withValues(alpha: 0.12)),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(20)),
-                child: const Text('YOUR FIRST-RESPONSE GUIDE', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.16),
+                    borderRadius: BorderRadius.circular(20)),
+                child: const Text('YOUR FIRST-RESPONSE GUIDE',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1)),
               ),
               const SizedBox(height: 17),
-              Text('Hi, $cleanName!', style: const TextStyle(color: Colors.white70, fontSize: 14, fontWeight: FontWeight.w600)),
+              Text(
+                'Logged In: $cleanName',
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               const SizedBox(height: 5),
               const Text(
                 'Learn today.\nBe ready to help.',
-                style: TextStyle(color: Colors.white, fontSize: 29, height: 1.12, fontWeight: FontWeight.w900),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 29,
+                    height: 1.12,
+                    fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: 10),
               const Text(
                 'Explore simple medical explainers and first-aid awareness topics so you can recognize risks and know when to get help.',
-                style: TextStyle(color: Color(0xFFFFEDED), fontSize: 13, height: 1.5),
+                style: TextStyle(
+                    color: Color(0xFFFFEDED), fontSize: 13, height: 1.5),
               ),
               const SizedBox(height: 18),
               ElevatedButton.icon(
@@ -205,8 +252,10 @@ class _MenuScreenState extends State<MenuScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: darkRed,
-                  padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 13),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 17, vertical: 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14)),
                   textStyle: const TextStyle(fontWeight: FontWeight.w800),
                 ),
               ),
@@ -225,7 +274,12 @@ class _MenuScreenState extends State<MenuScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xFFF2DEDE)),
-        boxShadow: [BoxShadow(color: const Color(0xFF5B2020).withValues(alpha: 0.04), blurRadius: 12, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+              color: const Color(0xFF5B2020).withValues(alpha: 0.04),
+              blurRadius: 12,
+              offset: const Offset(0, 4))
+        ],
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
@@ -238,7 +292,9 @@ class _MenuScreenState extends State<MenuScreen> {
               Container(
                 width: 54,
                 height: 54,
-                decoration: BoxDecoration(color: const Color(0xFFFFE7E7), borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(
+                    color: const Color(0xFFFFE7E7),
+                    borderRadius: BorderRadius.circular(16)),
                 child: Icon(feature['icon'] as IconData, color: red, size: 28),
               ),
               const SizedBox(width: 14),
@@ -246,18 +302,37 @@ class _MenuScreenState extends State<MenuScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(feature['tag'] as String, style: const TextStyle(color: red, fontSize: 9, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                    Text(feature['tag'] as String,
+                        style: const TextStyle(
+                            color: red,
+                            fontSize: 9,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1)),
                     const SizedBox(height: 4),
-                    Text(feature['title'] as String, style: const TextStyle(color: Color(0xFF29242A), fontSize: 16, fontWeight: FontWeight.w900)),
+                    Text(feature['title'] as String,
+                        style: const TextStyle(
+                            color: Color(0xFF29242A),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900)),
                     const SizedBox(height: 5),
-                    Text(feature['description'] as String, style: const TextStyle(color: Color(0xFF71676D), fontSize: 12, height: 1.45)),
+                    Text(feature['description'] as String,
+                        style: const TextStyle(
+                            color: Color(0xFF71676D),
+                            fontSize: 12,
+                            height: 1.45)),
                     const SizedBox(height: 8),
-                    Text(feature['details'] as String, style: const TextStyle(color: Color(0xFF8E1717), fontSize: 10, fontWeight: FontWeight.w700, height: 1.4)),
+                    Text(feature['details'] as String,
+                        style: const TextStyle(
+                            color: Color(0xFF8E1717),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            height: 1.4)),
                   ],
                 ),
               ),
               const SizedBox(width: 5),
-              const Icon(Icons.arrow_forward_ios_rounded, color: Color(0xFFB8A0A0), size: 16),
+              const Icon(Icons.arrow_forward_ios_rounded,
+                  color: Color(0xFFB8A0A0), size: 16),
             ],
           ),
         ),
@@ -268,7 +343,9 @@ class _MenuScreenState extends State<MenuScreen> {
   Widget _buildQuickGuide() {
     return Container(
       padding: const EdgeInsets.all(17),
-      decoration: BoxDecoration(color: const Color(0xFFFFEAEA), borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+          color: const Color(0xFFFFEAEA),
+          borderRadius: BorderRadius.circular(20)),
       child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -278,9 +355,16 @@ class _MenuScreenState extends State<MenuScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('How to use this app', style: TextStyle(color: darkRed, fontWeight: FontWeight.w900, fontSize: 14)),
+                Text('How to use this app',
+                    style: TextStyle(
+                        color: darkRed,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 14)),
                 SizedBox(height: 6),
-                Text('1. Pick a topic.\n2. Read the signs and key facts.\n3. In a real emergency, keep yourself safe and contact local emergency services.', style: TextStyle(color: Color(0xFF6D4B4B), fontSize: 12, height: 1.55)),
+                Text(
+                    '1. Pick a topic.\n2. Read the signs and key facts.\n3. In a real emergency, keep yourself safe and contact local emergency services.',
+                    style: TextStyle(
+                        color: Color(0xFF6D4B4B), fontSize: 12, height: 1.55)),
               ],
             ),
           ),
@@ -342,7 +426,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: background,
-
       appBar: AppBar(
         backgroundColor: background,
         foregroundColor: const Color(0xFF29242A),
@@ -356,7 +439,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
-
       body: isLoading
           ? const Center(
               child: CircularProgressIndicator(
@@ -366,7 +448,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           : ListView(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
               children: [
-
                 // PROFILE HEADER
                 Container(
                   padding: const EdgeInsets.all(22),
@@ -389,10 +470,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-
                   child: Column(
                     children: [
-
                       // AVATAR
                       Container(
                         padding: const EdgeInsets.all(4),
@@ -559,10 +638,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: const Color(0xFFF2E5E5),
                     ),
                   ),
-
                   child: Row(
                     children: [
-
                       Container(
                         width: 44,
                         height: 44,
@@ -576,9 +653,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           size: 23,
                         ),
                       ),
-
                       const SizedBox(width: 13),
-
                       const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -602,7 +677,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ],
                         ),
                       ),
-
                       Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 11,
@@ -636,9 +710,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: red,
                         size: 27,
                       ),
-
                       const SizedBox(height: 8),
-
                       const Text(
                         'FIRST RESPONSE',
                         style: TextStyle(
@@ -648,9 +720,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           letterSpacing: 2,
                         ),
                       ),
-
                       const SizedBox(height: 4),
-
                       Text(
                         'Learn today. Be ready to help.',
                         style: TextStyle(
@@ -688,10 +758,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-
       child: Row(
         children: [
-
           Container(
             width: 45,
             height: 45,
@@ -705,14 +773,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               size: 23,
             ),
           ),
-
           const SizedBox(width: 14),
-
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 Text(
                   title,
                   style: const TextStyle(
@@ -721,9 +786,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-
                 const SizedBox(height: 5),
-
                 Text(
                   value,
                   style: const TextStyle(
@@ -735,7 +798,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ],
             ),
           ),
-
           const Icon(
             Icons.check_circle_rounded,
             color: Color(0xFF43A66B),

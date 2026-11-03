@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class LearnScreen extends StatefulWidget {
   const LearnScreen({super.key});
 
@@ -12,8 +10,6 @@ class LearnScreen extends StatefulWidget {
 }
 
 class _LearnScreenState extends State<LearnScreen> {
-  
-
   static const red = Color(0xFFC62828);
   static const darkRed = Color(0xFF8E1717);
   static const background = Color(0xFFFFF7F7);
@@ -33,57 +29,183 @@ class _LearnScreenState extends State<LearnScreen> {
   }
 
 // D. LOAD CUSTOM ARTICLES
-Future<void> _loadCustomArticles() async {
-  final prefs = await SharedPreferences.getInstance();
+  Future<void> _loadCustomArticles() async {
+    final prefs = await SharedPreferences.getInstance();
 
-  final savedData = prefs.getString(storageKey);
+    final savedData = prefs.getString(storageKey);
 
-  if (savedData == null) return;
+    if (savedData == null) return;
 
-  try {
-    final decoded = jsonDecode(savedData) as List;
+    try {
+      final decoded = jsonDecode(savedData) as List;
 
-    final loadedArticles = decoded.map((item) {
-      final article = Map<String, dynamic>.from(item);
+      final loadedArticles = decoded.map((item) {
+        final article = Map<String, dynamic>.from(item);
 
-      return <String, dynamic>{
-        ...article,
-        'icon': Icons.library_books_rounded,
-        'color': const Color(0xFFE8E5FF),
-        '_isCustom': true,
+        return <String, dynamic>{
+          ...article,
+          'icon': Icons.library_books_rounded,
+          'color': const Color(0xFFE8E5FF),
+          '_isCustom': true,
+        };
+      }).toList();
+
+      if (!mounted) return;
+
+      setState(() {
+        customArticles.addAll(loadedArticles);
+      });
+    } catch (e) {
+      debugPrint('Error loading custom topics: $e');
+    }
+  }
+
+// E. SAVE CUSTOM ARTICLES
+  Future<void> _saveCustomArticles() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final data = customArticles.map((article) {
+      return {
+        'id': article['id'],
+        'title': article['title'],
+        'subtitle': article['subtitle'],
+        'category': article['category'],
+        'summary': article['summary'],
+        'sections': article['sections'],
       };
     }).toList();
 
-    if (!mounted) return;
+    await prefs.setString(
+      storageKey,
+      jsonEncode(data),
+    );
+  }
+
+  Future<void> _addCustomArticle() async {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Create New Topic'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                labelText: 'Topic Name',
+              ),
+            ),
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(
+                labelText: 'Description',
+              ),
+              maxLines: 3,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (titleController.text.trim().isNotEmpty &&
+                  descriptionController.text.trim().isNotEmpty) {
+                Navigator.pop(dialogContext, true);
+              }
+            },
+            child: const Text('Add Topic'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == true && mounted) {
+      setState(() {
+        customArticles.add({
+          'id': DateTime.now().microsecondsSinceEpoch.toString(),
+          'title': titleController.text.trim(),
+          'subtitle': 'Custom Learning Topic',
+          'category': 'Custom',
+          'summary': descriptionController.text.trim(),
+          'sections': [
+            'About this topic',
+            descriptionController.text.trim(),
+          ],
+          'icon': Icons.library_books_rounded,
+          'color': const Color(0xFFE8E5FF),
+          '_isCustom': true,
+        });
+
+        selectedCategory = 'All';
+        searchController.clear();
+      });
+
+      await _saveCustomArticles();
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Topic successfully added!'),
+        ),
+      );
+    }
+
+    titleController.dispose();
+    descriptionController.dispose();
+  }
+
+  Future<void> _deleteCustomArticle(
+    Map<String, dynamic> article,
+  ) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Delete Topic?'),
+        content: Text(
+          'Delete "${article['title']}"?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true || !mounted) return;
 
     setState(() {
-      customArticles.addAll(loadedArticles);
+      customArticles.removeWhere(
+        (item) => item['id'] == article['id'],
+      );
     });
-  } catch (e) {
-    debugPrint('Error loading custom topics: $e');
+
+    await _saveCustomArticles();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Topic deleted successfully!'),
+      ),
+    );
   }
-}
-
-// E. SAVE CUSTOM ARTICLES
-Future<void> _saveCustomArticles() async {
-  final prefs = await SharedPreferences.getInstance();
-
-  final data = customArticles.map((article) {
-    return {
-      'id': article['id'],
-      'title': article['title'],
-      'subtitle': article['subtitle'],
-      'category': article['category'],
-      'summary': article['summary'],
-      'sections': article['sections'],
-    };
-  }).toList();
-
-  await prefs.setString(
-    storageKey,
-    jsonEncode(data),
-  );
-}
 
   final categories = const [
     'All',
@@ -238,8 +360,9 @@ Future<void> _saveCustomArticles() async {
 
   List<Map<String, dynamic>> get filteredArticles {
     final query = searchController.text.trim().toLowerCase();
+    final allArticles = [...articles, ...customArticles];
 
-    return articles.where((article) {
+    return allArticles.where((article) {
       final categoryMatches =
           selectedCategory == 'All' || article['category'] == selectedCategory;
 
@@ -563,10 +686,21 @@ Future<void> _saveCustomArticles() async {
                                     ),
                                   ),
                                   const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.chevron_right_rounded,
-                                    color: Color(0xFFB5A7A7),
-                                  ),
+                                  if (article['_isCustom'] == true)
+                                    IconButton(
+                                      tooltip: 'Delete topic',
+                                      onPressed: () =>
+                                          _deleteCustomArticle(article),
+                                      icon: const Icon(
+                                        Icons.delete_outline,
+                                        color: Colors.red,
+                                      ),
+                                    )
+                                  else
+                                    const Icon(
+                                      Icons.chevron_right_rounded,
+                                      color: Color(0xFFB5A7A7),
+                                    ),
                                 ],
                               ),
                             ),
@@ -594,6 +728,13 @@ Future<void> _saveCustomArticles() async {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _addCustomArticle,
+        backgroundColor: red,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.add),
+        label: const Text('Add Topic'),
       ),
     );
   }

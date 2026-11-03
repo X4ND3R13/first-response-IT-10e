@@ -298,11 +298,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  static const red = Color(0xFFC62828);
+  static const darkRed = Color(0xFF8E1717);
+  static const background = Color(0xFFFFFAFA);
+
   String userName = '';
-  String password = '';
   String studentClass = '';
   bool isLoading = true;
-  bool showPassword = false;
 
   @override
   void initState() {
@@ -313,165 +315,431 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
 
+    if (!mounted) return;
+
     setState(() {
       userName = prefs.getString('user_name') ?? 'Unknown';
-      password = prefs.getString('user_password') ?? 'Unknown';
       studentClass = prefs.getString('student_class') ?? 'Unknown';
       isLoading = false;
     });
   }
 
+  String get initials {
+    if (userName.trim().isEmpty || userName == 'Unknown') {
+      return '?';
+    }
+
+    final parts = userName.trim().split(RegExp(r'\s+'));
+
+    if (parts.length >= 2) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+
+    return parts[0][0].toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF092328),
+      backgroundColor: background,
+
       appBar: AppBar(
+        backgroundColor: background,
+        foregroundColor: const Color(0xFF29242A),
+        elevation: 0,
+        centerTitle: false,
         title: const Text(
-          'Profile',
-          style: TextStyle(fontWeight: FontWeight.bold),
+          'My Profile',
+          style: TextStyle(
+            fontSize: 21,
+            fontWeight: FontWeight.w800,
+          ),
         ),
-        backgroundColor: const Color(0xFF12544F),
-        foregroundColor: Colors.white,
       ),
+
       body: isLoading
           ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-
-                  // Profile Icon
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Color(0xFF8BBB92),
-                    child: Icon(
-                      Icons.person,
-                      size: 60,
-                      color: Color(0xFF12544F),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // Name
-                  _buildInfoCard(
-                    icon: Icons.person_outline,
-                    title: 'Name',
-                    value: userName,
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  // Class
-                  _buildInfoCard(
-                    icon: Icons.school_outlined,
-                    title: 'Class',
-                    value: studentClass,
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  // Password
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.lock_outline,
-                          color: Color(0xFF12544F),
-                        ),
-                        const SizedBox(width: 15),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Password',
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                showPassword ? password : '•' * password.length,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF092328),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            showPassword
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: const Color(0xFF12544F),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              showPassword = !showPassword;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+              child: CircularProgressIndicator(
+                color: red,
               ),
+            )
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
+              children: [
+
+                // PROFILE HEADER
+                Container(
+                  padding: const EdgeInsets.all(22),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        darkRed,
+                        red,
+                        Color(0xFFE45151),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    boxShadow: [
+                      BoxShadow(
+                        color: red.withValues(alpha: 0.15),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+
+                  child: Column(
+                    children: [
+
+                      // AVATAR
+                      Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.white.withValues(alpha: 0.8),
+                            width: 2,
+                          ),
+                        ),
+                        child: CircleAvatar(
+                          radius: 42,
+                          backgroundColor: Colors.white,
+                          child: Text(
+                            initials,
+                            style: const TextStyle(
+                              color: red,
+                              fontSize: 29,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 17),
+
+                      // NAME
+                      Text(
+                        userName,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+
+                      const SizedBox(height: 7),
+
+                      // STUDENT BADGE
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 13,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.17),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.school_rounded,
+                              color: Colors.white,
+                              size: 14,
+                            ),
+                            SizedBox(width: 6),
+                            Text(
+                              'STUDENT ACCOUNT',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 17),
+
+                      Container(
+                        height: 1,
+                        color: Colors.white.withValues(alpha: 0.2),
+                      ),
+
+                      const SizedBox(height: 14),
+
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.verified_rounded,
+                            color: Colors.white,
+                            size: 16,
+                          ),
+                          SizedBox(width: 7),
+                          Text(
+                            'Welcome to First Response',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 28),
+
+                // SECTION TITLE
+                const Text(
+                  'Personal Information',
+                  style: TextStyle(
+                    color: Color(0xFF29242A),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+
+                const SizedBox(height: 5),
+
+                const Text(
+                  'Your personal account details.',
+                  style: TextStyle(
+                    color: Color(0xFF95888C),
+                    fontSize: 12,
+                  ),
+                ),
+
+                const SizedBox(height: 17),
+
+                // NAME CARD
+                _buildInfoCard(
+                  icon: Icons.person_outline_rounded,
+                  title: 'Full Name',
+                  value: userName,
+                ),
+
+                const SizedBox(height: 12),
+
+                // CLASS CARD
+                _buildInfoCard(
+                  icon: Icons.school_outlined,
+                  title: 'Class / Grade',
+                  value: studentClass,
+                ),
+
+                const SizedBox(height: 25),
+
+                // ACCOUNT SECTION
+                const Text(
+                  'Account Overview',
+                  style: TextStyle(
+                    color: Color(0xFF29242A),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                Container(
+                  padding: const EdgeInsets.all(17),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                      color: const Color(0xFFF2E5E5),
+                    ),
+                  ),
+
+                  child: Row(
+                    children: [
+
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE8F5E9),
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        child: const Icon(
+                          Icons.shield_rounded,
+                          color: Color(0xFF2E9B59),
+                          size: 23,
+                        ),
+                      ),
+
+                      const SizedBox(width: 13),
+
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Account Status',
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w800,
+                                color: Color(0xFF29242A),
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Your profile information',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Color(0xFF95888C),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 11,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE8F5E9),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Text(
+                          'ACTIVE',
+                          style: TextStyle(
+                            color: Color(0xFF2E9B59),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                // FOOTER
+                Center(
+                  child: Column(
+                    children: [
+                      const Icon(
+                        Icons.health_and_safety_rounded,
+                        color: red,
+                        size: 27,
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      const Text(
+                        'FIRST RESPONSE',
+                        style: TextStyle(
+                          color: darkRed,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 2,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        'Learn today. Be ready to help.',
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
     );
   }
 
+  // REUSABLE INFORMATION CARD
   Widget _buildInfoCard({
     required IconData icon,
     required String title,
     required String value,
   }) {
     return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: const Color(0xFFF2E5E5),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
+
       child: Row(
         children: [
-          Icon(
-            icon,
-            color: const Color(0xFF12544F),
+
+          Container(
+            width: 45,
+            height: 45,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFEEEE),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: Icon(
+              icon,
+              color: red,
+              size: 23,
+            ),
           ),
-          const SizedBox(width: 15),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey,
+
+          const SizedBox(width: 14),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: Color(0xFF95888C),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 5),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF092328),
+
+                const SizedBox(height: 5),
+
+                Text(
+                  value,
+                  style: const TextStyle(
+                    color: Color(0xFF29242A),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+          ),
+
+          const Icon(
+            Icons.check_circle_rounded,
+            color: Color(0xFF43A66B),
+            size: 19,
           ),
         ],
       ),

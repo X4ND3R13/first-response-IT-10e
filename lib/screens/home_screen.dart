@@ -1,421 +1,372 @@
 import 'package:flutter/material.dart';
 
 // ============================================================================
-// 🛒 KANTINKU - STARTER TEMPLATE
-// Alta Global School | IT Grade 10 & 11 (SHS)
-//
-// 💡 PETUNJUK UNTUK SISWA:
-// 1. Template ini sudah 100% siap di-run di Android Studio / VS Code / Browser!
-// 2. Cari komentar berlabel [GANTI DI SINI] untuk memodifikasi komponen.
-// 3. Sesuaikan teks, ikon, warna, dan harga dengan Wireframe Figma tim kamu.
+// FIRST RESPONSE - HOME SCREEN (modern version)
+// Look for [CHANGE HERE] comments to edit text, colors, or cases.
 // ============================================================================
 
-class HomeScreen extends StatelessWidget {
+// Colors used on this screen
+const Color kTeal = Color(0xFF0E7C86);
+const Color kDarkTeal = Color(0xFF0A5A61);
+const Color kEmergencyRed = Color(0xFFE53935);
+const Color kBackground = Color(0xFFF4F8F9);
+const Color kTextDark = Color(0xFF1E293B);
+const Color kTextGrey = Color(0xFF64748B);
+
+// One emergency case (title, short description, icon, color)
+class EmergencyCase {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color color;
+
+  const EmergencyCase({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+  });
+}
+
+// [CHANGE HERE]: add, remove, or rename emergency cases in this list
+const List<EmergencyCase> emergencyCases = [
+  EmergencyCase(
+    title: 'CPR',
+    subtitle: 'Person not breathing',
+    icon: Icons.favorite,
+    color: Color(0xFFE53935),
+  ),
+  EmergencyCase(
+    title: 'Choking',
+    subtitle: 'Cannot breathe or talk',
+    icon: Icons.air,
+    color: Color(0xFF1E88E5),
+  ),
+  EmergencyCase(
+    title: 'Burns',
+    subtitle: 'Fire, heat, or hot liquid',
+    icon: Icons.local_fire_department,
+    color: Color(0xFFF57C00),
+  ),
+  EmergencyCase(
+    title: 'Bleeding',
+    subtitle: 'Cuts and heavy bleeding',
+    icon: Icons.water_drop,
+    color: Color(0xFFC62828),
+  ),
+  EmergencyCase(
+    title: 'Fracture',
+    subtitle: 'Broken or injured bone',
+    icon: Icons.healing,
+    color: Color(0xFF6D4C41),
+  ),
+  EmergencyCase(
+    title: 'Seizure',
+    subtitle: 'Shaking or unconscious',
+    icon: Icons.flash_on,
+    color: Color(0xFF8E24AA),
+  ),
+];
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int _selectedIndex = 0;
+
+  // Shows the "call emergency services" pop-up
+  void _showEmergencyDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        icon: const Icon(Icons.phone_in_talk, color: kEmergencyRed, size: 36),
+        title: const Text('Call emergency services?'),
+        content: const Text(
+          'Indonesia emergency numbers:\n\n'
+          '112 - General emergency\n'
+          '119 - Ambulance',
+          style: TextStyle(height: 1.5),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FilledButton.icon(
+            style: FilledButton.styleFrom(backgroundColor: kEmergencyRed),
+            onPressed: () {
+              Navigator.pop(context);
+              // TODO: connect real phone call here (url_launcher package)
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Calling 112... (demo)')),
+              );
+            },
+            icon: const Icon(Icons.call),
+            label: const Text('Call 112'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Runs when a case card is tapped
+  void _openCase(EmergencyCase item) {
+    // TODO: open the tutorial screen for this case
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('${item.title} tutorial coming soon')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 9, 35, 40 ), // Warna background abu-abu terang
+      backgroundColor: kBackground,
 
-      // ----------------------------------------------------------------------
-      // 1. APPBAR (Bagian Header Atas)
-      // [GANTI DI SINI]: Ubah judul aplikasi atau warna AppBar sesuai tema tim kamu
-      // ----------------------------------------------------------------------
+      // ---------------- APP BAR ----------------
       appBar: AppBar(
         title: const Text(
-          'Basic life support', // [GANTI DI SINI]: Judul aplikasi kantin kamu
+          'First Response', // [CHANGE HERE]: app title
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: const Color(0xFF0E7C86), // [GANTI DI SINI]: Warna AppBar
+        backgroundColor: kTeal,
         foregroundColor: Colors.white,
-        elevation: 2,
+        elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              // TODO (Week 6): Fitur pencarian menu
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            onPressed: () {
-              // TODO (Week 6): Fitur keranjang belanja
+              // TODO: search emergency cases
             },
           ),
         ],
       ),
 
-      // ----------------------------------------------------------------------
-      // 2. BODY (Bagian Konten Utama)
-      // Menggunakan Column untuk menyusun elemen secara vertikal (atas ke bawah)
-      // ----------------------------------------------------------------------
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            // ================================================================
-            // KOMPONEN A: Kartu Informasi Siswa & Saldo
-            // [GANTI DI SINI]: Ubah nama siswa, kelas, atau nominal saldo
-            // ================================================================
-            Container(
-              padding: const EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x0D000000), // Shadow halus
-                    blurRadius: 6,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Row(
-                    children: [
-                      // Avatar Inisial Nama
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Color(0xFF0E7C86), // [GANTI DI SINI]: Warna avatar
-                        child: Text(
-                          'MS', // [GANTI DI SINI]: Inisial nama siswa
-                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Meldi Sayoko', // [GANTI DI SINI]: Nama pengguna / persona
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
-                          ),
-                          Text(
-                            'Kelas 10-B • AGS', // [GANTI DI SINI]: Kelas / Identitas
-                            style: TextStyle(fontSize: 11, color: Color(0xFF64748B)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  // Badge Saldo KantinKu
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFEF3C7),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Text(
-                      'Rp 45.000', // [GANTI DI SINI]: Saldo awal kantin
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFB45309)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 16), // Spacing pemisah antar komponen
-
-            // ================================================================
-            // KOMPONEN B: Banner Promo / Menu Spesial
-            // [GANTI DI SINI]: Ubah judul promo, teks deskripsi, dan warna banner
-            // ================================================================
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16.0),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF0A5A61), Color(0xFF0E7C86)], // [GANTI DI SINI]: Warna gradien
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+      // ---------------- BODY ----------------
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Greeting
+              const Text(
+                'Stay calm.',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: kTextDark,
                 ),
-                borderRadius: BorderRadius.circular(16.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x4D0E7C86),
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFD166),
-                      borderRadius: BorderRadius.circular(8),
+              const SizedBox(height: 4),
+              const Text(
+                'Help is one tap away.',
+                style: TextStyle(fontSize: 15, color: kTextGrey),
+              ),
+              const SizedBox(height: 16),
+
+              // BIG EMERGENCY BUTTON
+              Material(
+                color: kEmergencyRed,
+                borderRadius: BorderRadius.circular(20),
+                elevation: 4,
+                shadowColor: const Color(0x66E53935),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(20),
+                  onTap: _showEmergencyDialog,
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 22),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 28,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.call, color: kEmergencyRed, size: 30),
+                        ),
+                        SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'EMERGENCY CALL',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                              SizedBox(height: 2),
+                              Text(
+                                'Tap to call 112 / 119',
+                                style: TextStyle(color: Colors.white70, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Icon(Icons.chevron_right, color: Colors.white, size: 28),
+                      ],
                     ),
-                    child: const Text(
-                      'MENU SPESIAL HARI INI', // [GANTI DI SINI]: Label promo
-                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF0A5A61)),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Section title
+              const Text(
+                'What is happening?',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: kTextDark,
+                ),
+              ),
+              const SizedBox(height: 12),
+
+              // GRID OF EMERGENCY CASES
+              GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                mainAxisSpacing: 12,
+                crossAxisSpacing: 12,
+                childAspectRatio: 1.1,
+                children: emergencyCases.map((item) {
+                  return Material(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(18),
+                    elevation: 1,
+                    shadowColor: const Color(0x33000000),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(18),
+                      onTap: () => _openCase(item),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: item.color,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(item.icon, color: Colors.white, size: 24),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.title,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: kTextDark,
+                                  ),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  item.subtitle,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(fontSize: 12, color: kTextGrey),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Nasi Goreng Spesial Kantin', // [GANTI DI SINI]: Nama menu promo
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'Pre-order sekarang untuk jam istirahat 12.00 WIB.', // [GANTI DI SINI]: Deskripsi
-                    style: TextStyle(fontSize: 12, color: Colors.white70),
-                  ),
-                ],
+                  );
+                }).toList(),
               ),
-            ),
 
-            const SizedBox(height: 20),
+              const SizedBox(height: 24),
 
-            // ================================================================
-            // KOMPONEN C: Daftar Menu Kantin
-            // [GANTI DI SINI]: Ubah judul kategori & daftar item menu di bawah ini
-            // ================================================================
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Menu Populer Hari Ini', // [GANTI DI SINI]: Judul section
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Color(0xFF1E293B)),
+              // QUICK TIP CARD
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [kDarkTeal, kTeal],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                Text(
-                  'Lihat Semua', // [GANTI DI SINI]: Action link
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Color(0xFF0E7C86)),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'QUICK TIP', // [CHANGE HERE]
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFFFD166),
+                        letterSpacing: 1,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Check the scene is safe before helping.',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      'Then call for help and follow the steps in the tutorial.',
+                      style: TextStyle(fontSize: 13, color: Colors.white70),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 10),
-
-            // Kartu Menu Item 1 (Makanan Utama)
-            // [GANTI DI SINI]: Sesuaikan nama, harga, dan stan penjual
-            Container(
-              padding: const EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x0A000000),
-                    blurRadius: 6,
-                    offset: Offset(0, 2),
-                  ),
-                ],
               ),
-              child: Column(
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Mie Ayam Bakso + Es Teh', // [GANTI DI SINI]: Nama Menu
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
-                      ),
-                      Text(
-                        'Rp 18.000', // [GANTI DI SINI]: Harga Menu
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF0E7C86)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(height: 1, color: Color(0xFFF1F5F9)),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Kantin Bu Siti (Stan 03)', // [GANTI DI SINI]: Nama Penjual
-                        style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8)),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // TODO (Week 6): Aksi saat tombol pesan ditekan
-                        },
-                        icon: const Icon(Icons.add_shopping_cart, size: 14),
-                        label: const Text('Pesan', style: TextStyle(fontSize: 11)),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0E7C86),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
 
-            const SizedBox(height: 10),
-
-            // Kartu Menu Item 2 (Makanan Utama)
-            // [GANTI DI SINI]: Sesuaikan nama, harga, dan stan penjual
-            Container(
-              padding: const EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x0A000000),
-                    blurRadius: 6,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Nasi Ayam Geprek Sambal Bawang', // [GANTI DI SINI]: Nama Menu
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
-                      ),
-                      Text(
-                        'Rp 15.000', // [GANTI DI SINI]: Harga Menu
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF0E7C86)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(height: 1, color: Color(0xFFF1F5F9)),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Kantin Pak Joko (Stan 01)', // [GANTI DI SINI]: Nama Penjual
-                        style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8)),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // TODO (Week 6): Aksi saat tombol pesan ditekan
-                        },
-                        icon: const Icon(Icons.add_shopping_cart, size: 14),
-                        label: const Text('Pesan', style: TextStyle(fontSize: 11)),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0E7C86),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-            // Kartu Menu Item 3 (Minuman Segar)
-            // [GANTI DI SINI]: Sesuaikan nama, harga, dan stan penjual
-            Container(
-              padding: const EdgeInsets.all(14.0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(14.0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x0A000000),
-                    blurRadius: 6,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Es Teh Manis Jumbo', // [GANTI DI SINI]: Nama Minuman
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1E293B)),
-                      ),
-                      Text(
-                        'Rp 5.000', // [GANTI DI SINI]: Harga Minuman
-                        style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF0E7C86)),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  const Divider(height: 1, color: Color(0xFFF1F5F9)),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Kantin Bu Siti (Stan 03)', // [GANTI DI SINI]: Nama Penjual
-                        style: TextStyle(fontSize: 11, color: Color(0xFF94A3B8)),
-                      ),
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          // TODO (Week 6): Aksi saat tombol pesan ditekan
-                        },
-                        icon: const Icon(Icons.add_shopping_cart, size: 14),
-                        label: const Text('Pesan', style: TextStyle(fontSize: 11)),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0E7C86),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          minimumSize: Size.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-          ],
+              const SizedBox(height: 12),
+            ],
+          ),
         ),
       ),
 
-      // ----------------------------------------------------------------------
-      // 3. BOTTOM NAVIGATION BAR
-      // [GANTI DI SINI]: Sesuaikan tab menu navigasi bawah dengan wireframe kamu
-      // ----------------------------------------------------------------------
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        selectedItemColor: const Color(0xFF0E7C86),
-        unselectedItemColor: const Color(0xFF94A3B8),
-        selectedFontSize: 11,
-        unselectedFontSize: 10,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant),
-            label: 'Beranda',
+      // ---------------- BOTTOM NAVIGATION ----------------
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: (index) {
+          setState(() => _selectedIndex = index);
+          // TODO: switch to the other screens here
+        },
+        backgroundColor: Colors.white,
+        indicatorColor: const Color(0x330E7C86),
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home, color: kTeal),
+            label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'Menu',
+          NavigationDestination(
+            icon: Icon(Icons.medical_services_outlined),
+            selectedIcon: Icon(Icons.medical_services, color: kTeal),
+            label: 'Cases',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long),
-            label: 'Pesanan',
+          NavigationDestination(
+            icon: Icon(Icons.menu_book_outlined),
+            selectedIcon: Icon(Icons.menu_book, color: kTeal),
+            label: 'Learn',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Akun',
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person, color: kTeal),
+            label: 'Account',
           ),
         ],
       ),
